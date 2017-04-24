@@ -1,4 +1,7 @@
 /sfml-*
 /openal32.dll
 /build
+/*.vcxproj
+/*.vcxproj.*
+/Debug
 .DS_Store
