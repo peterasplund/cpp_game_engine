@@ -7,7 +7,7 @@
 void Player::init()
 {
 	groupID = GroupIDS::NORMAL;
-	
+
 	int tw = 32;
 	int th = 50;
 

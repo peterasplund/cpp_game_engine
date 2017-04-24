@@ -1,3 +1,4 @@
 /sfml-*
 /openal32.dll
+/build
 .DS_Store

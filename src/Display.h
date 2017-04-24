@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace Display
 {
@@ -8,7 +8,7 @@ namespace Display
 
 	void clear();
 	void display();
-	
+
 	void draw(const sf::Drawable& drawable);
 
 	void checkWindowEvents();

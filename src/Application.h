@@ -3,8 +3,8 @@
 #include <memory>
 #include <stack>
 
-#include "States\Game_State.h"
-#include "Resource_Managers\Resource_Holder.h"
+#include "States/Game_State.h"
+#include "Resource_Managers/Resource_Holder.h"
 
 class Application
 {

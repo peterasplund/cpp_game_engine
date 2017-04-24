@@ -26,7 +26,7 @@ Entity * EntityManager::get(std::string name)
 	{
 		return NULL;
 	}
-	else 
+	else
 	{
 		return found->second;
 	}

@@ -9,8 +9,8 @@
 #include "../Player.h"
 #include "../Collectible.h"
 
-#include <SFML\Graphics.hpp>
-#include <SFML\Audio.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 namespace State
 {
@@ -23,9 +23,6 @@ namespace State
 		bool update (float dt) override;
 		void draw   () override;
 	private:
-		sf::RectangleShape shape;
-		sf::Sound sound;
-		sf::Text text;
 		EntityManager *entityManager;
 	};
 }
