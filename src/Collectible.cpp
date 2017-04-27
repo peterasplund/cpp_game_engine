@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include "Collectible.h"
 #include "Display.h"
@@ -5,7 +6,8 @@
 
 #include <iostream>
 
-void Collectible::init()
+Collectible::Collectible(Texture_Name sprite, sf::Vector2f position)
+	: Entity(sprite, position) {
 {
 	groupID = GroupIDS::COLLECTIBLE;
 
@@ -27,17 +29,9 @@ void Collectible::init()
 	currentAnimation = &idleAnimation;
 }
 
-void Collectible::draw()
-{
-	Display::draw(texture);
-}
-
-void Collectible::collision(Entity* entity)
-{
-}
-
 bool Collectible::update(float dt)
 {
 	texture.setTextureRect(currentAnimation->getFrame());
 	return true;
 }
+*/

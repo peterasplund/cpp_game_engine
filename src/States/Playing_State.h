@@ -7,7 +7,7 @@
 #include "../Application.h"
 #include "../Display.h"
 #include "../Player.h"
-#include "../Collectible.h"
+#include "../TestBlock.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>

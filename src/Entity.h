@@ -1,6 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include "Collider.h"
+#include "Display.h"
+#include "Resource_Managers/Resource_Holder.h";
 
 enum GroupIDS
 {
@@ -12,10 +16,9 @@ enum GroupIDS
 
 class Entity {
 public:
-	Entity();
+	Entity(Texture_Name sprite, sf::Vector2f position);
 	~Entity();
-	virtual void init() {};
-	virtual void draw() {};
+	virtual void draw();
 	virtual bool update(float dt);
 
 	bool checkCollision(Entity* entity);
@@ -27,6 +30,9 @@ public:
 
 	sf::Vector2<float> velocity;
 	sf::RectangleShape texture;
+	sf::Sprite sprite;
+	sf::RectangleShape body;
+	Collider getCollider() { return Collider(body); }
 
 protected:
 	int groupID = GroupIDS::STATIC;

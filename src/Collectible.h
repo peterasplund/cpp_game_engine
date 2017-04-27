@@ -1,13 +1,11 @@
+/*
 #pragma once
 #include "Entity.h"
 #include "Animation.h"
 
 class Collectible : public Entity {
 public:
-	Collectible() : Entity() {
-		init();
-	};
-	virtual void init();
+	Collectible(Texture_Name sprite, sf::Vector2f position);
 	virtual void draw();
 	void collision(Entity * entity);
 	virtual bool update(float dt);
@@ -15,3 +13,4 @@ public:
 	Animation idleAnimation;
 	Animation* currentAnimation;
 };
+*/

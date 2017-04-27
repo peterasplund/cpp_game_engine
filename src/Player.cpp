@@ -1,49 +1,34 @@
 #include "Player.h"
-#include "Display.h"
-#include "Resource_Managers/Resource_Holder.h"
 
-#include <iostream>
-
-void Player::init()
-{
+Player::Player(Texture_Name sprite, sf::Vector2f position)
+	: Entity(sprite, position) {
 	groupID = GroupIDS::NORMAL;
 
-	int tw = 32;
-	int th = 50;
+	int tw = 39;
+	int th = 63;
 
-	walkSpeed = 2.2;
+	body.setSize({ (float)tw, (float)th });
+	this->sprite.setScale({ 2, 2 });
+	this->sprite.setTextureRect(body.getTextureRect());
+	
+	walkSpeed = 4;
 
-	texture.setTexture(&Resource_Holder::get().getTexture(Texture_Name::Player));
-	texture.setSize({ (float)tw * 2, (float)th * 2 });
+	walkAnimation.addFrame({ 0,      0, tw, th }, 0.1);
+	walkAnimation.addFrame({ tw,     0, tw, th }, 0.1);
+	walkAnimation.addFrame({ tw * 2, 0, tw, th }, 0.1);
+	walkAnimation.addFrame({ tw * 3, 0, tw, th }, 0.1);
+	walkAnimation.addFrame({ tw * 4, 0, tw, th }, 0.1);
+	walkAnimation.addFrame({ tw * 5, 0, tw, th }, 0.1);
+	walkAnimation.addFrame({ tw * 6, 0, tw, th }, 0.1);
+	walkAnimation.addFrame({ tw * 7, 0, tw, th }, 0.1);
+	walkAnimation.addFrame({ tw * 8, 0, tw, th }, 0.1);
+	walkAnimation.addFrame({ tw * 9, 0, tw, th }, 0.1);
 
+	jumpAnimation.addFrame({ tw * 10, 0, tw, th }, 0.1);
 
-	walkLeftAnimation.addFrame({ 0,      th * 3, tw, th }, 0.1);
-	walkLeftAnimation.addFrame({ tw,     th * 3, tw, th }, 0.1);
-	walkLeftAnimation.addFrame({ tw * 2, th * 3, tw, th }, 0.1);
-	walkLeftAnimation.addFrame({ tw * 3, th * 3, tw, th }, 0.1);
-
-	walkRightAnimation.addFrame({ 0,      th * 5, tw, th }, 0.1);
-	walkRightAnimation.addFrame({ tw,     th * 5, tw, th }, 0.1);
-	walkRightAnimation.addFrame({ tw * 2, th * 5, tw, th }, 0.1);
-	walkRightAnimation.addFrame({ tw * 3, th * 5, tw, th }, 0.1);
-
-	walkUpAnimation.addFrame({ 0,      th * 7, tw, th }, 0.1);
-	walkUpAnimation.addFrame({ tw,     th * 7, tw, th }, 0.1);
-	walkUpAnimation.addFrame({ tw * 2, th * 7, tw, th }, 0.1);
-	walkUpAnimation.addFrame({ tw * 3, th * 7, tw, th }, 0.1);
-
-	walkDownAnimation.addFrame({ 0,      th * 1, tw, th }, 0.1);
-	walkDownAnimation.addFrame({ tw,     th * 1, tw, th }, 0.1);
-	walkDownAnimation.addFrame({ tw * 2, th * 1, tw, th }, 0.1);
-	walkDownAnimation.addFrame({ tw * 3, th * 1, tw, th }, 0.1);
-
-	currentAnimation = &walkDownAnimation;
+	currentAnimation = &walkAnimation;
 }
 
-void Player::draw()
-{
-	Display::draw(texture);
-}
 
 bool Player::update(float dt)
 {
@@ -53,39 +38,55 @@ bool Player::update(float dt)
 	if (velocity.y != 0) {
 		velocity.y = 0;
 	}
+	if (velocity.y > maxVelocityY) {
+		velocity.y = maxVelocityY;
+	}
+
+	// velocity.y += gravity;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		currentAnimation = &walkLeftAnimation;
-		velocity.x -= walkSpeed;
+		direction = Direction::LEFT;
+		velocity.x =- walkSpeed;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		currentAnimation = &walkRightAnimation;
+		direction = Direction::RIGHT;
 		velocity.x = walkSpeed;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		currentAnimation = &walkUpAnimation;
-		velocity.y -= walkSpeed;
+		velocity.y =- walkSpeed;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		currentAnimation = &walkDownAnimation;
-		velocity.y += walkSpeed;
+		velocity.y = walkSpeed;
 	}
 
-	if (velocity.x != 0 || velocity.y != 0) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		// jump
+	}
+
+	if (velocity.x != 0) {
 		currentAnimation->play();
 	}
 	else {
 		currentAnimation->stop();
 	}
 
+	sf::IntRect rect = currentAnimation->getFrame();
 
-	texture.setTextureRect(currentAnimation->getFrame());
+	if (direction == Direction::LEFT) {
+		rect = sf::IntRect(rect.left + rect.width, rect.top, -rect.width, rect.height);
+	}
+	else {
+		rect = sf::IntRect(rect.left, rect.top, rect.width, rect.height);
+	}
 
-	texture.move(velocity);
+	Entity::update(dt);
+
+	sprite.setTextureRect(rect);
 	return true;
 }
 
@@ -96,6 +97,10 @@ void Player::collision(Entity* entity)
 	{
 	case GroupIDS::COLLECTIBLE:
 		entity->destroy();
+		break;
+	case GroupIDS::COLLISION:
+		getCollider().BoundingBoxTest(sprite, entity->sprite);
+		// texture.setPosition(body.getPosition());
 		break;
 	}
 }

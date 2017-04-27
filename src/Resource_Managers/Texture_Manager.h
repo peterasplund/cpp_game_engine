@@ -8,7 +8,8 @@
 enum class Texture_Name
 {
 	Player,
-	Coin
+	Coin,
+	Block
 };
 
 class Texture_Manager : public Resource_Manager<Texture_Name, sf::Texture>

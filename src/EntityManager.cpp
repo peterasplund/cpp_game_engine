@@ -38,6 +38,19 @@ bool EntityManager::update(float dt)
 
 	for (auto& iterator : this->entities)
 	{
+		switch (iterator.second->getActive())
+		{
+		case 0:
+			toRemove.push_back(iterator.first);
+			break;
+		default:
+			if (!iterator.second->update(dt))
+			{
+				return false;
+			}
+			break;
+		}
+
 		if (iterator.second->getGroupID() != GroupIDS::STATIC)
 		{
 			for (auto& iterator2 : this->entities)
@@ -55,18 +68,6 @@ bool EntityManager::update(float dt)
 			}
 		}
 
-		switch (iterator.second->getActive())
-		{
-		case 0:
-			toRemove.push_back(iterator.first);
-			break;
-		default:
-			if (!iterator.second->update(dt))
-			{
-				return false;
-			}
-			break;
-		}
 	}
 
 	for (auto& iterator : toRemove)

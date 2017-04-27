@@ -1,18 +1,25 @@
 #pragma once
 
 #include "Entity.h"
-#include <iostream>
 
-Entity::Entity()
+Entity::Entity(Texture_Name sprite, sf::Vector2f position)
 {
-	active = 1;
+	this->sprite.setTexture(Resource_Holder::get().getTexture(Texture_Name::Player));
+	this->sprite.setScale({ 2, 2 });
+	body.setSize({ this->sprite.getGlobalBounds().width, this->sprite.getGlobalBounds().height });
 
-	init();
+	active = 1;
+}
+
+void Entity::draw()
+{
+	Display::draw(sprite);
 }
 
 bool Entity::update(float dt)
 {
-	texture.move(this->velocity);
+	body.move(this->velocity);
+	sprite.setPosition(body.getPosition());
 	return true;
 }
 
@@ -22,7 +29,7 @@ void Entity::collision(Entity* entity)
 
 bool Entity::checkCollision(Entity* entity)
 {
-	return texture.getGlobalBounds().intersects(entity->texture.getGlobalBounds());
+	return body.getGlobalBounds().intersects(entity->body.getGlobalBounds());
 }
 
 int Entity::getGroupID()
